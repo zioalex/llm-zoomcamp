@@ -34,8 +34,11 @@ What we will do:
 * Alternative: installing anaconda or miniconda
 
 ```bash
-pip install tqdm notebook==7.1.2 openai elasticsearch pandas scikit-learn ipywidgets
+pipenv install tqdm notebook==7.1.2 openai elasticsearch pandas scikit-learn ipywidgets
 ```
+
+apt install direnv # to manage token secretly
+direnv hook bash >> ~/.bashrc.custom
 
 ## 1.3 Retrieval
 
@@ -122,6 +125,24 @@ docker run -it \
     elasticsearch:8.4.3
 ```
 
+docker run -it     --rm     --name elasticsearch     -m 4GB     -p 9200:9200     -p 9300:9300   -v /etc/ssl/certs:/etc/ssl/certs  -e "discovery.type=single-node"     -e "xpack.security.enabled=false"  docker-elastic-co.artifact.swissre.com/elasticsearch/elasticsearch:8.4.3
+
+docker cp  /usr/local/share/ca-certificates/SwissReRootCA2.crt elasticsearch:/usr/local/share/ca-certificates
+docker cp  /usr/local/share/ca-certificates/SwissReSystemCA22.crt elasticsearch:/usr/local/share/ca-certificates
+docker cp  /usr/local/share/ca-certificates/SwissReSystemCA25.crt elasticsearch:/usr/local/share/ca-certificates
+
+docker exec     --user 0 -ti elasticsearch update-ca-certificates
+
+To test it in my docker in docker on windows
+```bash
+curl -x "" -v  203.0.113.1:9200
+```
+Normally
+```bash
+curl localhost:9200
+```
+
+```bash
 Index settings:
 
 ```python
